@@ -1,32 +1,85 @@
 {
-  "name": "jira2md",
-  "version": "2.0.3",
-  "keywords": [
-    "jira",
-    "atlassian",
-    "wiki",
-    "markdown"
-  ],
-  "homepage": "http://github.com/kylefarris/J2M.git",
+  "name": "jira2markdown",
+  "version": "0.0.1",
+  "keywords": ["jira", "atlassian", "wiki", "markdown"],
   "repository": {
     "type": "git",
-    "url": "http://github.com/kylefarris/J2M.git"
+    "url": "https://github.com/metysj/jira2md.forked.git"
   },
   "description": "JIRA to MarkDown text format converter.",
-  "main": "index.js",
-  "devDependencies": {
-    "chai": "^3.3.0"
+  "main": "dist/jira2md.js",
+  "module": "src/index.js",
+  "engines": {
+    "node": "*"
   },
-  "scripts": {
-    "test": "make test"
-  },
-  "author": "Fokke Zandbergen <mail@fokkezb.nl>",
+  "files": ["dist/jira2md.js", "src"],
+  "author": "Joël Cheuoua <jcheuoua@gmail.com>",
   "contributors": [
+    "Fokke Zandbergen <mail@fokkezb.nl>",
     "Kyle Farris <kyle@chomponllc.com>",
     "Eryk Warren <https://github.com/erykwarren>"
   ],
   "license": "Apache-2.0",
-  "dependencies": {
-    "marked": "^0.3.5"
+  "lint-staged": {
+    "*.{js,json}": ["prettier --config .prettier.js --write", "git add"]
+  },
+  "devDependencies": {
+    "babel-jest": "latest",
+    "babel-plugin-external-helpers": "latest",
+    "babel-preset-env": "latest",
+    "benchmark": "latest",
+    "core-js": "latest",
+    "coveralls": "latest",
+    "esdoc-standard-plugin": "latest",
+    "eslint": "^4.12.0",
+    "eslint-config-airbnb-base": "12.0.2",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-prettier": "latest",
+    "gulp": "latest",
+    "gulp-babel-minify": "latest",
+    "gulp-bench": "latest",
+    "gulp-coveralls": "latest",
+    "gulp-esdoc": "icambron/gulp-esdoc#latest-esdoc",
+    "gulp-eslint": "latest",
+    "gulp-filter": "latest",
+    "gulp-jest": "2.0.0",
+    "gulp-rename": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "jest-cli": "latest",
+    "lazypipe": "latest",
+    "lint-staged": "^4.3.0",
+    "prettier": "1.7.4",
+    "rollup-plugin-babel": "latest",
+    "rollup-plugin-commonjs": "latest",
+    "rollup-plugin-node-resolve": "latest",
+    "rollup-stream": "latest",
+    "run-sequence": "latest",
+    "tap-min": "latest",
+    "through2": "latest",
+    "vinyl-buffer": "latest",
+    "vinyl-source-stream": "latest"
+  },
+  "dependencies": {},
+  "jspm": {
+    "files": ["jira2md.js", "jira2md.d.ts", "locale"],
+    "map": {
+      "jira2md": "./jira2md"
+    },
+    "buildConfig": {
+      "uglify": true
+    }
+  },
+  "scripts": {
+    "gulp": "gulp",
+    "precommit": "lint-staged"
+  },
+  "spm": {
+    "main": "jira2md.js",
+    "output": ["locale/*.js"]
   }
 }

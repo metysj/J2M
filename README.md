@@ -4,7 +4,9 @@
 Convert from JIRA text formatting to GitHub Flavored MarkDown and back again. Also allows for both to be converted to HTML.
 
 ## Credits
-This module was heavily inspired by the J2M project by Fokke Zandbergen (http://j2m.fokkezb.nl/). Major credit to Fokke (and other contributors) for establishing a lot of the fundamental RexExp patterns for this module to work.
+This module was heavily inspired by the jira2md 
+Which was in turn forked from the J2M project by Fokke Zandbergen (http://j2m.fokkezb.nl/). 
+Major credit to Fokke (and other contributors) for establishing a lot of the fundamental RexExp patterns for this module to work.
 
 ## Installation
 ```
@@ -25,14 +27,14 @@ NOTE: All conversion work bi-directionally (from jira to markdown and back again
 * Un-named links
 * Named links
 * Monospaced Text
-* ~~Citations~~ (Removed in 2.0.0)
+* Citations
 * Strikethroughs
 * Inserts
 * Superscripts
 * Subscripts
 * Single-paragraph blockquotes
-* Tables (thanks to erykwarren)
-* Panels (thanks to erykwarren)
+* Tables
+* Panels
 
 
 ## How to Use
@@ -61,19 +63,30 @@ h2. H2
 
 ### Examples
 
-```javascript
+```javascript | CommonJS
 // Include the module
-var j2m = require('jira2md');
+var jira2markdown = require('jira2markdown');
+
+// Instantiate the converter
+var j2m = new jira2markdown.Converter();
 
 // If converting from Mardown to Jira Wiki Syntax:
-var jira = j2m.to_jira(md);
+var jira = j2m.toJira(md);
 
 // If converting from Jira Wiki Syntax to Markdown:
-var md = j2m.to_markdown(jira);
+var md = j2m.toMarkdown(jira);
+```
 
-// If converting from Markdown to HTML:
-var html = j2m.md_to_html(md);
+```javascript | ES2015+
+// Include the module
+import { Converter } from 'jira2markdown';
 
-// If converting from JIRA Wiki Syntax to HTML:
-var html = j2m.jira_to_html(jira);
+// Instantiate the converter
+const j2m = new Converter();
+
+// If converting from Mardown to Jira Wiki Syntax:
+const jira = j2m.toJira(md);
+
+// If converting from Jira Wiki Syntax to Markdown:
+const md = j2m.toMarkdown(jira);
 ```
