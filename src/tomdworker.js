@@ -42,7 +42,9 @@ export class ToMdWorker {
       // table header
       'handleTableHeaders',
       // remove leading-space of table headers and rows
-      'handleTeableHeadersLeadingSpace'
+      'handleTeableHeadersLeadingSpaces',
+      // handle all trailing spaces (add 2 spaces so that it renders as line breaks)
+      'handleTrailingSpaces'
     ];
   }
 
@@ -140,7 +142,11 @@ export class ToMdWorker {
     });
   }
 
-  handleTeableHeadersLeadingSpace(str) {
+  handleTeableHeadersLeadingSpaces(str) {
     return str.replace(/^[ \t]*\|/gm, '|');
+  }
+
+  handleTrailingSpaces(str) {
+    return str.replace(/(\S)\r/g, '$1  \r');
   }
 }
