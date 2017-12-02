@@ -7,12 +7,11 @@
     "url": "https://github.com/metysj/jira2md.forked.git"
   },
   "description": "JIRA to MarkDown text format converter.",
-  "main": "dist/jira2md.js",
+  "main": "dist/global/jira2markdown.min.js",
   "module": "src/index.js",
   "engines": {
     "node": "*"
   },
-  "files": ["dist/jira2md.js", "src"],
   "author": "Fokke Zandbergen <mail@fokkezb.nl>",
   "contributors": [
     "Kyle Farris <kyle@chomponllc.com>",
@@ -30,7 +29,6 @@
     "benchmark": "latest",
     "core-js": "latest",
     "coveralls": "latest",
-    "esdoc-standard-plugin": "latest",
     "eslint": "^4.12.0",
     "eslint-config-airbnb-base": "12.0.2",
     "eslint-config-prettier": "^2.9.0",
@@ -65,21 +63,9 @@
     "vinyl-source-stream": "latest"
   },
   "dependencies": {},
-  "jspm": {
-    "files": ["jira2md.js", "jira2md.d.ts", "locale"],
-    "map": {
-      "jira2md": "./jira2md"
-    },
-    "buildConfig": {
-      "uglify": true
-    }
-  },
   "scripts": {
     "gulp": "gulp",
-    "precommit": "lint-staged"
-  },
-  "spm": {
-    "main": "jira2md.js",
-    "output": ["locale/*.js"]
+    "test": "gulp test",
+    "build": "gulp test build"
   }
 }
