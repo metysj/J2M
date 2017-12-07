@@ -99,11 +99,11 @@ export class ToJiraWorker {
     }
 
     handleNamedLinks(str) {
-        return str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '[$1|$2]');
+        return str.replace(/\[([^\]]+)\]\(((www\.|(https?|ftp):\/\/)[^\s/$.?#].[^\s]*)\)/g, '[$1|$2]');
     }
 
     handleUnNamedLinks(str) {
-        return str.replace(/<([^\/])([^>\s]+)>/g, '[$1$2]');
+        return str.replace(/<(((www\.|(https?|ftp):\/\/)[^\s/$.?#].[^\s]*))>/g, '[$1]');
     }
 
     handleSingleParagraphBlockquotes(str) {

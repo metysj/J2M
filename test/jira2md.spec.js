@@ -74,6 +74,10 @@ describe('J2M toMarkdown', () => {
     const markdown = j2m.toMarkdown('[http://google.com]');
     expect(markdown).toBe('<http://google.com>');
   });
+  test('should not convert brakets content that looks like unnamed links', () => {
+    const markdown = j2m.toMarkdown('[this is really not a link]');
+    expect(markdown).toBe('[this is really not a link]');
+  });
   test('should convert named links properly', () => {
     const markdown = j2m.toMarkdown('[Google|http://google.com]');
     expect(markdown).toBe('[Google](http://google.com)');

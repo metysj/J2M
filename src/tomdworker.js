@@ -123,11 +123,11 @@ export class ToMdWorker {
   }
 
   handleUnNamedLinks(str) {
-    return str.replace(/\[([^|]+)\]/g, '<$1>');
+    return str.replace(/\[((www\.|(https?|ftp):\/\/)[^\s/$.?#].[^\s]*)\]/g, '<$1>');
   }
 
   handleNamedLinks(str) {
-    return str.replace(/\[(.+?)\|(.+)\]/g, '[$1]($2)');
+    return str.replace(/\[(.+?)\|((www\.|(https?|ftp):\/\/)[^\s/$.?#].[^\s]*)\]/g, '[$1]($2)');
   }
 
   handleSingleParagraphBlockquotes(str) {
