@@ -27,6 +27,8 @@ export class ToMdWorker {
       'handleStrikethroughs',
       // Code Block
       'handleCodeBlocks',
+      // Quotes
+      'handleQuotes',
       // Pre-formatted text
       'handlePreFormatted',
       // Un-named Links
@@ -103,6 +105,17 @@ export class ToMdWorker {
       /\{code(:([a-z]+))?([:|]?(title|borderStyle|borderColor|borderWidth|bgColor|titleBGColor)=.+?)*\}([^]*)\{code\}/gm,
       '```$2$5```'
     );
+  }
+
+  handleQuotes(str) {
+    return str.replace(/\{quote\}([^]*)\{quote\}/gm, (match, lines) => {
+        return lines.split('\n').map(line => { 
+            if (line.trim().length) {
+                return '> ' + line + '\n';
+            } 
+            return '\n';
+        }).join('').trim() + '\n';
+    });
   }
 
   handlePreFormatted(str) {

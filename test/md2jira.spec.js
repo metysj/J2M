@@ -108,6 +108,10 @@ describe('J2M toJira', () => {
     const jira = j2m.toJira(md_str);
     expect(jira).toBe(jira_str);
   });
+  test('should not change markup that are not links', () => {
+    const jira = j2m.toJira('<span style="color:green" class="text-color-green">now with color</span>');
+    expect(jira).toBe('<span style="color:green" class="text-color-green">now with color</span>');
+  });
   test('should use a custom handler', () => {
     const markdown = j2m.toJira('* This is not bold!\n  * This is **bold**.', {
       preProcessing(str) {

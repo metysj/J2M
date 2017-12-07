@@ -6,7 +6,7 @@ Convert from JIRA text formatting to GitHub Flavored MarkDown and back again.
 ## Credits
 This module was heavily inspired by the jira2md project which was in turn forked from the J2M project by Fokke Zandbergen (http://j2m.fokkezb.nl/). 
 Major credit to Fokke (and other contributors) for establishing a lot of the fundamental RexExp patterns for this module to work.
-
+This module allows for providing custom handlers for the regexes and also fixes some bugs.
 ## Installation
 ```
 npm install jira2markdown

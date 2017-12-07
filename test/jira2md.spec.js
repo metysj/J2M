@@ -98,6 +98,18 @@ describe('J2M toMarkdown', () => {
     );
     expect(markdown).toBe('> This is a long blockquote type thingy that needs to be converted.');
   });
+  test('should convert blockquotes properly', () => {
+    const markdown = j2m.toMarkdown('{quote}\n' +
+      'We\'d like to file this exemption for this issue  \n' +
+      'SNECETQZUM-230 HDR-001-TC1: Black flash is observed when you enter and exit HDR playback when connected to Sony/LG/Vizio HDR TV\'s  \n' +
+      'please help to review with the attached file\n' +
+      '{quote}'
+    );
+    expect(markdown).toBe(
+        '> We\'d like to file this exemption for this issue  \n' +
+        '> SNECETQZUM-230 HDR-001-TC1: Black flash is observed when you enter and exit HDR playback when connected to Sony/LG/Vizio HDR TV\'s  \n' +
+        '> please help to review with the attached file\n');
+  });
   test('should convert un-ordered lists properly', () => {
     const markdown = j2m.toMarkdown(
       '* Foo\n* Bar\n* Baz\n** FooBar\n** BarBaz\n*** FooBarBaz\n* Starting Over'
