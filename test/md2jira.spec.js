@@ -44,7 +44,7 @@ describe('J2M toJira', () => {
   });
   test('should convert preformatted blocks properly', () => {
     const jira = j2m.toJira('```\nso *no* further **formatting** is done here\n```');
-    expect(jira).toBe('{code}\nso _no_ further *formatting* is done here\n{code}');
+    expect(jira).toBe('{code}\nso *no* further **formatting** is done here\n{code}');
   });
   test('should convert language-specific code blocks properly', () => {
     const jira = j2m.toJira("```javascript\nvar hello = 'world';\n```");

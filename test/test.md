@@ -20,7 +20,7 @@
 
 ```javascript
 var hello = 'world';
-{code}
+```
 
 <http://google.com>
 [Google](http://google.com)
@@ -28,9 +28,9 @@ var hello = 'world';
 GitHub Flavor
 ~~deleted~~
 
-{code}
+```
   preformatted piece of text
-  so *no_ further _formatting* is done here
+  so _no_ further _formatting_ is done here
 ```
 
 ***Should be bold AND italic***
@@ -64,3 +64,20 @@ GitHub Flavor
 | --- | --- |
 |Col A1|Col A2|
 |Col B1|Col B2|
+
+```
+Something
+```
+
+```
+Something else
+```
+
+```
+myDbgInfoPB = { _lastKeyTS: -1, _prevState: -1, _firstPtsAfterKey: false, PlayerState: { OPENING: 0, PLAYING: 1, PAUSED:  2, STOPPED: 3,CLOSED:  4 } };
+
+
+nrdp.gibbon.addEventListener("key", function(event) {if ( event.data.type == "press" ) { myDbgInfoPB._lastKeyTS=nrdp.mono(); myDbgInfoPB._firstPtsAfterKey = true; } });
+
+if(typeof nrdp.media.addEventListener != "undefined") { nrdp.media.addEventListener("updatepts", function(event) { var ts = nrdp.mono(); if ( myDbgInfoPB._firstPtsAfterKey == true ) { nrdp.log.error("keyToUpdatePTS,keyToEventGen,EventGenToJS=" +  (ts - myDbgInfoPB._lastKeyTS) + "," + (event.time - myDbgInfoPB._lastKeyTS) + "," + (ts - event.time) + " ms" ); myDbgInfoPB._firstPtsAfterKey = false; } }); nrdp.media.addEventListener("statechanged", function(event) { switch (event.state) { case myDbgInfoPB.PlayerState.OPENING: break; case myDbgInfoPB.PlayerState.PLAYING: break; case myDbgInfoPB.PlayerState.PAUSED: nrdp.log.error("keyToPlaybackPause  = " + (nrdp.mono() - myDbgInfoPB._lastKeyTS) + " ms"); break; case myDbgInfoPB.PlayerState.STOPPED: break; case myDbgInfoPB.PlayerState.CLOSED: nrdp.log.error("keyToPlaybackClosed  = " + (nrdp.mono() - myDbgInfoPB._lastKeyTS) + " ms"); break; default: break; } myDbgInfoPB._prevState=event.state; }); }
+```

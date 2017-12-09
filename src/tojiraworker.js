@@ -1,7 +1,12 @@
 export class ToJiraWorker {
+    constructor() {
+        this.replace_map = {};
+    }
 
     pipeline() {
         return [
+            // Named/Un-Named Code Block
+            'handleCodeBlocks',
             // Bold, Italic, and Combined (bold+italic)
             'handleBoldItalicsCombined',
             // Headers
@@ -17,8 +22,6 @@ export class ToJiraWorker {
             'handleTextEffects',
             // Other kind of strikethrough
             'handleStrikethroughs',
-            // Named/Un-Named Code Block
-            'handleCodeBlocks',
             // Inline-Preformatted Text
             'handlePreFormatted',
             // Named Link
@@ -28,7 +31,9 @@ export class ToJiraWorker {
             // Single Paragraph Blockquote
             'handleSingleParagraphBlockquotes',
             // tables
-            'handleTables'
+            'handleTables',
+            // replace all intermediary mappings 
+            'handleReplaceMap'
         ];
     }
 
@@ -87,11 +92,50 @@ export class ToJiraWorker {
     }
 
     handleCodeBlocks(str) {
-        return str.replace(/`{3,}(\w+)?((?:\n|[^`])+)`{3,}/g, (match, synt, content) => {
-            let code = '{code';
-            if (synt) { code += ':' + synt; }
-            return code + '}' + content + '{code}';
+        let result = '';
+        let currentWord = '';
+        let collecting = false;
+        
+        let index = -1;
+        for (let i = 0; i < str.length; i++) {
+            let ch = str[i];
+            if (' \t\n\r\v'.indexOf(ch) === -1 && i < str.length - 1) {
+                currentWord += ch;
+            } else {
+                if (i === str.length - 1) { currentWord += ch; ch = '';}
+                // evaluate currentWord - if it's {code*} pattern, start collecting or stop collecting
+                const codeRegEx = /`{3,}(\w+)?/;
+                const match = currentWord.match(codeRegEx);
+                if (match) {
+                    result += '{code' + (match[1] ? (':' + match[1]) : '' ) + '}' + ch;
+                    collecting = !collecting;
+                    if (collecting) {
+                        index++;
+                    }
+                } else {
+                    if (collecting) {
+                        const key = '@code:' + index + ':code@';
+                        if (this.replace_map[key]) {
+                            this.replace_map[key] += currentWord + ch;
+                        } else {
+                            this.replace_map[key] = currentWord + ch;
+                            result += key;
+                        }
+                    } else {
+                        result += currentWord + ch;
+                    }
+                }
+                currentWord = '';
+            }
+        }
+        return result;
+    }
+
+    handleReplaceMap(str) {
+        Object.keys(this.replace_map).forEach(key => {
+            str = str.replace(key, this.replace_map[key]);
         });
+        return str;
     }
 
     handlePreFormatted(str) {

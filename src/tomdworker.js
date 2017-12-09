@@ -1,8 +1,14 @@
 export class ToMdWorker {
-  constructor(str) {}
+  constructor() {
+    this.replace_map = {};
+  }
 
-  pipeline(str) {
+  pipeline() {
     return [
+      // Code Block
+      'handleCodeBlocks',
+      // Quotes
+      'handleQuotes',
       // Ordered Lists
       'handleOrederedLists',
       // Un-Ordered Lists
@@ -25,10 +31,6 @@ export class ToMdWorker {
       'handleSubscripts',
       // Strikethrough
       'handleStrikethroughs',
-      // Code Block
-      'handleCodeBlocks',
-      // Quotes
-      'handleQuotes',
       // Pre-formatted text
       'handlePreFormatted',
       // Un-named Links
@@ -46,7 +48,9 @@ export class ToMdWorker {
       // remove leading-space of table headers and rows
       'handleTeableHeadersLeadingSpaces',
       // handle all trailing spaces (add 2 spaces so that it renders as line breaks)
-      'handleTrailingSpaces'
+      'handleTrailingSpaces',
+      // replace all intermediary mappings 
+      'handleReplaceMap'
     ];
   }
 
@@ -101,10 +105,50 @@ export class ToMdWorker {
   }
 
   handleCodeBlocks(str) {
-    return str.replace(
-      /\{code(:([a-z]+))?([:|]?(title|borderStyle|borderColor|borderWidth|bgColor|titleBGColor)=.+?)*\}([^]*)\{code\}/gm,
-      '```$2$5```'
-    );
+    let result = '';
+    let currentWord = '';
+    let collecting = false;
+    
+    let index = -1;
+    for (let i = 0; i < str.length; i++) {
+      let ch = str[i];
+      if (' \t\n\r\v'.indexOf(ch) === -1 && i < str.length - 1) {
+        currentWord += ch;
+      } else {
+        if (i === str.length - 1) { currentWord += ch; ch = '';}
+        // evaluate currentWord - if it's {code*} pattern, start collecting or stop collecting
+        const codeRegEx = /\{code(:([a-z]+))?([:|]?(title|borderStyle|borderColor|borderWidth|bgColor|titleBGColor)=.+?)*\}/;
+        const match = currentWord.match(codeRegEx);
+        if (match) {
+          result += '```' + (match[2] ? match[2] : '' ) + ch;
+          collecting = !collecting;
+          if (collecting) {
+            index++;
+          }
+        } else {
+          if (collecting) {
+            const key = '@code_(' + index + ')_code@';
+            if (this.replace_map[key]) {
+              this.replace_map[key] += currentWord + ch;
+            } else {
+              this.replace_map[key] = currentWord + ch;
+              result += key;
+            }
+          } else {
+            result += currentWord + ch;
+          }
+        }
+        currentWord = '';
+      }
+    }
+    return result;
+  }
+
+  handleReplaceMap(str) {
+    Object.keys(this.replace_map).forEach(key => {
+      str = str.replace(key, this.replace_map[key]);
+    });
+    return str;
   }
 
   handleQuotes(str) {

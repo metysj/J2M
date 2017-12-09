@@ -7,7 +7,7 @@ const convert = function(str, worker, customHandler) {
     str = customHandler.preProcessing(str);
   }
   pipeline.forEach(method => {
-    const func = customHandler && customHandler[method] ? customHandler[method] : worker[method];
+    const func = customHandler && customHandler[method] ? customHandler[method].bind(customHandler) : worker[method].bind(worker);
     str = func(str);
   });
   if (customHandler && customHandler.postProcessing) {

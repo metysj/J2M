@@ -44,9 +44,9 @@ describe('J2M toMarkdown', () => {
   });
   test('should convert preformatted blocks properly', () => {
     const markdown = j2m.toMarkdown(
-      '{noformat}\nso *no* further _formatting_ is done here\n{noformat}'
+      '{code}\nso *no* further _formatting_ is done here\n{code}'
     );
-    expect(markdown).toBe('```\nso **no** further *formatting* is done here\n```');
+    expect(markdown).toBe('```\nso *no* further _formatting_ is done here\n```');
   });
   test('should convert language-specific code blocks properly', () => {
     const markdown = j2m.toMarkdown("{code:javascript}\nvar hello = 'world';\n{code}");
@@ -60,7 +60,7 @@ describe('J2M toMarkdown', () => {
   });
   test('should convert fully configured code block', () => {
     const markdown = j2m.toMarkdown(
-      '{code:xml|title=My Title|borderStyle=dashed|borderColor=#ccc|titleBGColor=#F7D6C1|bgColor=#FFFFCE}' +
+      '{code:xml|title=MyTitle|borderStyle=dashed|borderColor=#ccc|titleBGColor=#F7D6C1|bgColor=#FFFFCE}' +
         '\n    <test>' +
         '\n        <another tag="attribute"/>' +
         '\n    </test>' +
