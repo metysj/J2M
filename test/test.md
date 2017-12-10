@@ -73,6 +73,8 @@ Something
 Something else
 ```
 
+myDbgInfoPB = { _lastKeyTS: -1, _prevState: -1, _firstPtsAfterKey: false, PlayerState: { OPENING: 0, PLAYING: 1, PAUSED:  2, STOPPED: 3,CLOSED:  4 } };
+
 ```
 myDbgInfoPB = { _lastKeyTS: -1, _prevState: -1, _firstPtsAfterKey: false, PlayerState: { OPENING: 0, PLAYING: 1, PAUSED:  2, STOPPED: 3,CLOSED:  4 } };
 

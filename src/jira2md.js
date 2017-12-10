@@ -1,7 +1,6 @@
-export class ToMdWorker {
-  constructor() {
-    this.replace_map = {};
-  }
+import { Worker } from './worker';
+
+export class Jira2MdWorker extends Worker {
 
   pipeline() {
     return [
@@ -73,11 +72,11 @@ export class ToMdWorker {
   }
 
   handleBolds(str) {
-    return str.replace(/(^|\s|_)\*(\S.*)\*/g, '$1**$2**');
+    return str.replace(/(^|\s|_)\*(\S.*)(\S)\*/g, '$1**$2$3**');
   }
 
   handleItalics(str) {
-    return str.replace(/(^|\s|\*)\_(\S.*)\_/g, '$1*$2*');
+    return str.replace(/(^|\s|\*)\_(\S.*)(\S)\_/g, '$1*$2$3*');
   }
 
   handleMonospaced(str) {
@@ -89,15 +88,15 @@ export class ToMdWorker {
   }
 
   handleInserts(str) {
-    return str.replace(/(^|\s)\+([^+]*)\+/g, '$1<ins>$2</ins>');
+    return str.replace(/(^|\s)\+([^+]*)(\S)\+/g, '$1<ins>$2$3</ins>');
   }
 
   handleSuperscripts(str) {
-    return str.replace(/(^|\s)\^([^^]*)\^/g, '$1<sup>$2</sup>');
+    return str.replace(/(^|\s)\^([^^]*)(\S)\^/g, '$1<sup>$2$3</sup>');
   }
 
   handleSubscripts(str) {
-    return str.replace(/(^|\s)~([^~]*)~/g, '$1<sub>$2</sub>');
+    return str.replace(/(^|\s)~([^~]*)(\S)~/g, '$1<sub>$2$3</sub>');
   }
 
   handleStrikethroughs(str) {
@@ -142,13 +141,6 @@ export class ToMdWorker {
       }
     }
     return result;
-  }
-
-  handleReplaceMap(str) {
-    Object.keys(this.replace_map).forEach(key => {
-      str = str.replace(key, this.replace_map[key]);
-    });
-    return str;
   }
 
   handleQuotes(str) {

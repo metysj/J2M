@@ -98,6 +98,10 @@ describe('J2M toJira', () => {
     const jira = j2m.toJira('This is ***emphatically bold***!');
     expect(jira).toBe('This is _*emphatically bold*_!');
   });
+  test('should handle 4+ more stars correctly (not convert them as italic and/or bold)', () => {
+    const jira = j2m.toJira('This is ****too many stars to convert****!');
+    expect(jira).toBe('This is ****too many stars to convert****!');
+  });
   test('should handle bold within a un-ordered list item', () => {
     const jira = j2m.toJira('* This is not bold!\n  * This is **bold**.');
     expect(jira).toBe('* This is not bold!\n** This is *bold*.');
@@ -111,6 +115,16 @@ describe('J2M toJira', () => {
   test('should not change markup that are not links', () => {
     const jira = j2m.toJira('<span style="color:green" class="text-color-green">now with color</span>');
     expect(jira).toBe('<span style="color:green" class="text-color-green">now with color</span>');
+  });
+  test('should not change text that are invalid table markeup', () => {
+    const jira = j2m.toJira('\n|Heading 1|Heading 2|Heading 3|\n' +
+    '| --- | --- |\n' +
+    '|Col A1|Col A2|\n' +
+    '|Col B1|Col B2|\n');
+    expect(jira).toBe('\n|Heading 1|Heading 2|Heading 3|\n' +
+    '| --- | --- |\n' +
+    '|Col A1|Col A2|\n' +
+    '|Col B1|Col B2|\n');
   });
   test('should use a custom handler', () => {
     const markdown = j2m.toJira('* This is not bold!\n  * This is **bold**.', {

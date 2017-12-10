@@ -1,7 +1,6 @@
-export class ToJiraWorker {
-    constructor() {
-        this.replace_map = {};
-    }
+import { Worker } from './worker';
+
+export class Md2JiraWorker extends Worker {
 
     pipeline() {
         return [
@@ -43,7 +42,7 @@ export class ToJiraWorker {
                 case 1: return '_' + content + '_';
                 case 2: return '*' + content + '*';
                 case 3: return '_*' + content + '*_';
-                default: return wrapper + content * wrapper;
+                default: return wrapper + content + wrapper;
             }
         });
     }
@@ -129,13 +128,6 @@ export class ToJiraWorker {
             }
         }
         return result;
-    }
-
-    handleReplaceMap(str) {
-        Object.keys(this.replace_map).forEach(key => {
-            str = str.replace(key, this.replace_map[key]);
-        });
-        return str;
     }
 
     handlePreFormatted(str) {
