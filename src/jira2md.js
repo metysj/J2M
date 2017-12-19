@@ -86,7 +86,7 @@ export class Jira2MdWorker extends Worker {
   }
 
   handleCitations(str) {
-    return str.replace(/(^|\s)\?\?((?:.[^?]|[^?].)+)\?\?/g, '$1*&mdash; $2*');
+    return str.replace(/(^|\s)\?\?((?:[^?])+)\?\?/g, '$1*&mdash; $2*');
   }
 
   handleInserts(str) {
