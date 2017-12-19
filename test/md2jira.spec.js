@@ -126,6 +126,14 @@ describe('J2M toJira', () => {
     '|Col A1|Col A2|\n' +
     '|Col B1|Col B2|\n');
   });
+  test('should change table with no headers', () => {
+    const jira = j2m.toJira('\n|||\n' +
+    '| --- | --- |\n' +
+    '|Col A1|Col A2|\n' +
+    '|Col B1|Col B2|\n');
+    expect(jira).toBe('\n|Col A1|Col A2|\n' +
+    '|Col B1|Col B2|\n');
+  });
   test('should use a custom handler', () => {
     const markdown = j2m.toJira('* This is not bold!\n  * This is **bold**.', {
       preProcessing(str) {

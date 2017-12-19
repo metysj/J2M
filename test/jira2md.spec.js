@@ -160,6 +160,28 @@ describe('J2M toMarkdown', () => {
       'A text with<span style="color:blue" class="text-color-blue"> blue \n lines </span> is not necessary.'
     );
   });
+  test('should handle table with trailing spaces after row ends', () => {
+    const markdown = j2m.toMarkdown(
+      '| | | A | B |	C |\n' +
+      '|Row 1|	Amarillo	|5.0	|2700|	25165824|\n' +
+      '|Row 2|	Gilbert|	5.0|	2550|	25165824|\n' +
+      '|Row 3|	Midland|	5.0|	2485|	33554432|\n' +
+      '|Row 4|	Briscoe|	4.2|	4100|	67108864| \n' +
+      '|Row 5|	Littlefield|	4.2|	3850|	67108864|\n' +
+      '| | Row 6| |		4000| |	  \n' +
+      '| | Row 7| |		3750| |\n');
+    var expected = '| | | | | |\n' +
+      '| --- | --- | --- | --- | --- |\n' +
+      '| | | A | B |	C |\n' +
+      '|Row 1|	Amarillo	|5.0	|2700|	25165824|\n' +
+      '|Row 2|	Gilbert|	5.0|	2550|	25165824|\n' +
+      '|Row 3|	Midland|	5.0|	2485|	33554432|\n' +
+      '|Row 4|	Briscoe|	4.2|	4100|	67108864|\n' +
+      '|Row 5|	Littlefield|	4.2|	3850|	67108864|\n' +
+      '| | Row 6| |		4000| |\n' +
+      '| | Row 7| |		3750| |\n';
+    expect(markdown).toBe(expected);
+  });
   test('should use a custom handler', () => {
     const markdown = j2m.toMarkdown('* This is not bold!\n** This is *bold*.', {
       handleBolds(str) {

@@ -1,7 +1,12 @@
 {
   "name": "jira2markdown",
-  "version": "0.1.0",
-  "keywords": ["jira", "atlassian", "wiki", "markdown"],
+  "version": "0.1.5",
+  "keywords": [
+    "jira",
+    "atlassian",
+    "wiki",
+    "markdown"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/metysj/jira2md.forked.git"
@@ -19,7 +24,10 @@
   ],
   "license": "Apache-2.0",
   "lint-staged": {
-    "*.{js,json}": ["prettier --config .prettier.js --write", "git add"]
+    "*.{js,json}": [
+      "prettier --config .prettier.js --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "babel-jest": "latest",

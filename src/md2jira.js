@@ -150,17 +150,21 @@ export class Md2JiraWorker extends Worker {
         return str.replace(/^\n((?:\|.*?)+\|)[ \t]*\n((?:\|\s*?\-{3,}\s*?)+\|)[ \t]*\n((?:(?:\|.*?)+\|[ \t]*\n)*)$/gm, (match, headerLine, separatorLine, rowstr) => {
             const headers = headerLine.match(/[^|]+(?=\|)/g);
             const separators = separatorLine.match(/[^|]+(?=\|)/g);
-            if (headers.length !== separators.length) {
+            if (headers && (headers.length !== separators.length)) {
                 return match;
             }
             const rows = rowstr.split('\n');
-            if (rows.length === 1 + 1 && headers.length === 1) {
+            if (!headers) {
+                // no headers
+                return '\n' + rowstr;
+            } else if (rows.length === 1 + 1 && headers.length === 1) {
                 // panel
                 return '{panel:title=' + headers[0].trim() + '}\n' +
                     rowstr.replace(/^\|(.*)[ \t]*\|/, '$1').trim() +
                     '\n{panel}\n';
             } else {
-                return '||' + headers.join('||') + '||\n' + rowstr;
+                const emptyHeaders = headers.reduce((partial, header) => partial && (header.trim().length === 0), true);
+                return emptyHeaders ? '\n' + rowstr : '||' + headers.join('||') + '||\n' + rowstr;
             }
         });
     }

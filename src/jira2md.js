@@ -40,12 +40,14 @@ export class Jira2MdWorker extends Worker {
       'handleSingleParagraphBlockquotes',
       // Colors
       'handleColors',
+      // table with no header
+      'handleTableWithNoHeaders',
       // panel into table
       'handlePanels',
-      // table header
+      // table with header
       'handleTableHeaders',
       // remove leading-space of table headers and rows
-      'handleTeableHeadersLeadingSpaces',
+      'handleTableHeadersLeadingSpaces',
       // handle all trailing spaces (add 2 spaces so that it renders as line breaks)
       'handleTrailingSpaces',
       // replace all intermediary mappings 
@@ -191,11 +193,29 @@ export class Jira2MdWorker extends Worker {
     });
   }
 
-  handleTeableHeadersLeadingSpaces(str) {
+  handleTableWithNoHeaders(str) {
+    return str.replace(/^[ \t]*((?:\|{1}[^\|\n]+)+\|)[ \t]*$/gm, (match, row, offset) => {
+      let lookupOffset = offset - 1;
+      let breaksCount = 0;
+      while (lookupOffset > 0 && 
+          (str[lookupOffset] === ' ' || str[lookupOffset] === '\n' || str[lookupOffset] === '\t') && 
+          breaksCount < 2) {
+        if (str[lookupOffset] === '\n') { breaksCount++; }
+        lookupOffset--;
+      }
+      if (lookupOffset > 0 && str[lookupOffset] === '|') {
+        return match.trim();
+      }
+      const emptyHeaders = row.trim().replace(/\|[^|]+/g, '| ');
+      return emptyHeaders + '\n' + row.trim().replace(/\|[^|]+/g, '| --- ') + '\n' + row.trim();
+    });
+  }
+
+  handleTableHeadersLeadingSpaces(str) {
     return str.replace(/^[ \t]*\|/gm, '|');
   }
 
   handleTrailingSpaces(str) {
-    return str.replace(/(\S)\r/g, '$1  \r');
+    return str.replace(/([^\|\s])(\r)/g, '$1   $2');
   }
 }
